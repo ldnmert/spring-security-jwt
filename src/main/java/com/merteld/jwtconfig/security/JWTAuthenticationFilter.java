@@ -1,4 +1,6 @@
-package com.merteld.jwtconfig.auth;
+package com.merteld.jwtconfig.security;
+
+import static com.merteld.jwtconfig.security.JWTConstants.TOKEN_PREFIX;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -59,7 +61,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		String token = jwtUtil.generateToken(userDetails);
 
 		JSONObject jsonResponse = new JSONObject();
-		jsonResponse.put("token", "Bearer " + token);
+		jsonResponse.put("token", TOKEN_PREFIX + token);
 
 		PrintWriter writer = res.getWriter();
 		writer.write(jsonResponse.toString());

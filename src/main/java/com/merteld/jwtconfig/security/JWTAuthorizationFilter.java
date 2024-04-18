@@ -1,8 +1,7 @@
-package com.merteld.jwtconfig.auth;
+package com.merteld.jwtconfig.security;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,6 +20,9 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import static com.merteld.jwtconfig.security.JWTConstants.HEADER_STRING;
+import static com.merteld.jwtconfig.security.JWTConstants.TOKEN_PREFIX;
+import static com.merteld.jwtconfig.security.JWTConstants.SECRET_KEY;
 
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
@@ -37,9 +39,9 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 	protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain chain)
 			throws IOException, ServletException {
 
-		String header = req.getHeader("Authorization");
+		String header = req.getHeader(HEADER_STRING);
 
-		if (header == null || !header.startsWith("Bearer ")) {
+		if (header == null || !header.startsWith(TOKEN_PREFIX)) {
 			chain.doFilter(req, res);
 			return;
 		}
@@ -54,8 +56,8 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 		String token = request.getHeader("Authorization");
 		if (token != null) {
 			try {
-				DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC512("EAXCF")).build()
-						.verify(token.replace("Bearer ", ""));
+				DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC512(SECRET_KEY)).build()
+						.verify(token.replace(TOKEN_PREFIX, ""));
 
 				String user = decodedJWT.getSubject();
 				String rolesString = decodedJWT.getClaim("roleName").asString();

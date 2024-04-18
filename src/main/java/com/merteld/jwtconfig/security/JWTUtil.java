@@ -1,6 +1,7 @@
-package com.merteld.jwtconfig.auth;
+package com.merteld.jwtconfig.security;
 
 import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
+import static com.merteld.jwtconfig.security.JWTConstants.SECRET_KEY;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -16,8 +17,6 @@ import com.auth0.jwt.JWT;
 
 @Component
 public class JWTUtil {
-	@Serial
-	private static final long serialVersionUID = -2550185165626007488L;
 
 	@Value("${jwt.accessToken.expirationMs}")
 	private Long accessTokenExpirationMs;
@@ -32,7 +31,7 @@ public class JWTUtil {
 	private String doGenerateToken(String roles, String subject, Long expirationMs) {
 		try {
 			return JWT.create().withSubject(subject).withExpiresAt(new Date(System.currentTimeMillis() + expirationMs))
-					.withClaim("roleName", roles).sign(HMAC512("EAXCF"));
+					.withClaim("roleName", roles).sign(HMAC512(SECRET_KEY));
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
