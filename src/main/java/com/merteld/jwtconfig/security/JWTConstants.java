@@ -6,6 +6,6 @@ public class JWTConstants {
     public static final String HEADER_STRING = "Authorization";
     public static final String LOGIN_URL = "/login";
     public static final String SECRET_KEY = "EAXCF";
-    public static final String SIGN_UP_URL = "/auth/sign-up";
+    public static final String SIGN_UP_URL = "/sign-up";
 	
 }

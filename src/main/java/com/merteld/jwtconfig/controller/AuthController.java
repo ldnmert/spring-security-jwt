@@ -25,7 +25,7 @@ public class AuthController {
 		this.agentRepository = agentRepository;
 	}
 
-	@PostMapping("/signup")
+	@PostMapping("/sign-up")
 	public ResponseEntity<String> signUp(@RequestBody Agent agent) {
 
 		System.out.println(agent.getPassword());
